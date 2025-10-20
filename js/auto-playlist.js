@@ -16,8 +16,8 @@ export async function initAutoPlaylist(playerSelector = "#video-player", options
     }
     try {
       plyrInstance = new Plyr(playerEl, {
-        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-        ratio: '16:9',
+        controls: ["play", "progress", "current-time", "mute", "volume", "fullscreen"],
+        ratio: "16:9",
       });
     } catch (e) {
       console.warn("Plyr initialization failed:", e);
@@ -54,7 +54,7 @@ export async function initAutoPlaylist(playerSelector = "#video-player", options
         playerEl.play().catch(() => {});
       }
 
-      // Update title display if available
+      // Update video title (invisible)
       updateVideoTitle(currentVideo.title || `Video ${idx + 1}`);
     };
 
@@ -77,7 +77,8 @@ export async function initAutoPlaylist(playerSelector = "#video-player", options
     msg.style.color = "var(--redish)";
     msg.style.marginTop = "18px";
     msg.style.fontWeight = "700";
-    msg.textContent = "⚠️ Failed to load playlist. Please check /data/videos.json or contact support at https://videx.icu/help";
+    msg.textContent =
+      "⚠️ Failed to load playlist. Please check /data/videos.json or contact support at https://videx.icu/help";
     container.appendChild(msg);
   }
 }
@@ -94,17 +95,13 @@ function loadScript(src) {
   });
 }
 
-// Optional: Update video title dynamically on the page
+// Optional: Update video title dynamically (but keep it invisible)
 function updateVideoTitle(title) {
   let titleEl = document.getElementById("video-title");
   if (!titleEl) {
     titleEl = document.createElement("div");
     titleEl.id = "video-title";
-    titleEl.style.marginTop = "12px";
-    titleEl.style.fontWeight = "800";
-    titleEl.style.fontSize = "16px";
-    titleEl.style.color = "var(--dark)";
-    titleEl.style.textAlign = "center";
+    titleEl.style.display = "none"; // ✅ Hidden visually and non-intrusive
     const container = document.querySelector(".container") || document.body;
     container.insertBefore(titleEl, container.firstChild);
   }
