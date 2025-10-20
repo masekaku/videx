@@ -10,7 +10,6 @@ export async function initAutoPlaylist(playerSelector = "#video-player", options
   // Optionally initialize Plyr if requested and if the library is available
   let plyrInstance = null;
   if (options.usePlyr) {
-    // Dynamically load Plyr script if not already present
     if (typeof Plyr === "undefined") {
       await loadScript("https://cdn.plyr.io/3.7.8/plyr.polyfilled.js");
     }
@@ -47,15 +46,13 @@ export async function initAutoPlaylist(playerSelector = "#video-player", options
           type: "video",
           sources: [{ src: currentVideo.url, type: "video/mp4" }],
         };
-        // Attempt autoplay after user gesture
         plyrInstance.play().catch(() => {});
       } else {
         playerEl.src = currentVideo.url;
         playerEl.play().catch(() => {});
       }
 
-      // Update video title (invisible)
-      updateVideoTitle(currentVideo.title || `Video ${idx + 1}`);
+      // Title removed permanently
     };
 
     loadIndex(idx);
@@ -93,17 +90,4 @@ function loadScript(src) {
     script.onerror = (e) => reject(e);
     document.head.appendChild(script);
   });
-}
-
-// Optional: Update video title dynamically (but keep it invisible)
-function updateVideoTitle(title) {
-  let titleEl = document.getElementById("video-title");
-  if (!titleEl) {
-    titleEl = document.createElement("div");
-    titleEl.id = "video-title";
-    titleEl.style.display = "none"; // ✅ Hidden visually and non-intrusive
-    const container = document.querySelector(".container") || document.body;
-    container.insertBefore(titleEl, container.firstChild);
-  }
-  titleEl.textContent = title;
 }
