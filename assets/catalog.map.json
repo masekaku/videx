@@ -1,21 +1,5 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "^/v/(.*)$",
-      "dest": "/v/index.html"
-    },
-    {
-      "src": "/assets/(.*)",
-      "headers": {
-        "Cache-Control": "no-store"
-      },
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "status": 404,
-      "dest": "/404.html"
-    }
-  ]
+  "abc123": {"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+  "xyz789": {"url": "https://partner-streaming.com/watch/xyz789"},
+  "promo01": {"url": "https://example-partner.com/promo?ref=baru"}
 }
