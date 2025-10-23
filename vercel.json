@@ -1,15 +1,12 @@
 {
-  "version": 2,
   "routes": [
     {
       "src": "^/v/(.*)$",
-      "dest": "/v/index.html"
+      "dest": "/index.html"
     },
     {
       "src": "/assets/(.*)",
-      "headers": {
-        "Cache-Control": "no-store"
-      },
+      "headers": { "Cache-Control": "no-store" },
       "dest": "/assets/$1"
     },
     {
