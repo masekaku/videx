@@ -3,30 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age Verification</title>
-  <base href="/" />
+  <title>Continue to Video</title>
+  
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/css/style.css">
-  <meta name="robots" content="noindex, nofollow">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Poppins', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  
 </head>
-<body class="bg-[#f8f8f0] min-h-screen flex items-center justify-center p-6">
+<body class="bg-[#fcfbf8] font-sans flex items-center justify-center min-h-screen p-5">
 
-  <main id="ageModal" class="modal-container">
-    <h1 class="modal-title">Continue to Video?</h1>
-    <p class="modal-text">
-      Your video is ready.<br>
-      Click the button below to start watching.
+  <div class="bg-white border-2 border-black rounded-2xl p-6 md:p-8 text-center max-w-sm w-full">
+    
+    <h2 class="text-2xl font-semibold mb-3 text-gray-900">
+      Continue to Video?
+    </h2>
+    
+    <p class="text-base text-gray-600 mb-6">
+      Your video is ready. Click the button below to start watching.
     </p>
-    <button id="continueBtn" disabled class="modal-btn" aria-label="Lanjutkan untuk menonton konten video">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M14.752 11.168l-6.518-3.759A1 1 0 007 8.159v7.682a1 1 0 001.234.971l6.518-1.99a1 1 0 00.748-.971v-2.584a1 1 0 00-.748-.97z" />
-      </svg>
-      Lanjutkan untuk Menonton
-    </button>
-    <div id="errorBox" class="error-box"></div>
-  </main>
 
-  <script src="/js/main.js"></script>
+    <button 
+      id="watch-button"
+      class="bg-[#ffe04a] text-black border-2 border-black rounded-xl px-6 py-3 text-base font-semibold inline-flex items-center gap-2 transition-all hover:bg-[#fcd428] hover:-translate-y-0.5 disabled:bg-gray-300 disabled:cursor-not-allowed"
+    >
+      <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.5999 7.10132C14.2666 7.48365 14.2666 8.51635 13.5999 8.89868L3.9999 14.216C3.33324 14.5983 2.4999 14.082 2.4999 13.3173V2.68269C2.4999 1.91802 3.33324 1.40167 3.9999 1.78399L13.5999 7.10132Z" fill="black"/>
+      </svg>
+      Start Watching
+    </button>
+  </div>
+
+  <script src="/app.js"></script>
+
 </body>
 </html>
