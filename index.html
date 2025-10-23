@@ -1,136 +1,32 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mengalihkan...</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Verification</title>
+  <meta name="robots" content="noindex, nofollow">
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-  <main class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
-    <div class="flex items-center gap-3">
-      <div class="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center">
-        <span class="text-xl">🔗</span>
-      </div>
-      <h1 class="text-xl font-semibold text-slate-800">Sedang menyiapkan tautan…</h1>
-    </div>
+<body class="bg-[#f8f8f0] min-h-screen flex items-center justify-center p-6">
 
-    <p id="status" class="mt-4 text-slate-600">Memuat data tujuan…</p>
+  <main class="bg-white rounded-2xl shadow-lg shadow-black/25 border border-black p-8 max-w-md w-full text-center transition-transform transform hover:scale-[1.02]">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">Continue to Video?</h1>
+    <p class="text-gray-800 text-base mb-6">
+      Your video is ready.<br>
+      Click the button below to start watching.
+    </p>
 
-    <div id="detail" class="mt-3 hidden">
-      <div class="text-sm text-slate-500">Tujuan:</div>
-      <div id="title" class="font-medium text-slate-800"></div>
-      <div id="url" class="text-xs text-slate-500 break-all"></div>
-    </div>
+    <button id="continueBtn" disabled
+      class="flex items-center justify-center gap-2 w-full py-3 bg-yellow-400 text-gray-800 font-bold rounded-xl shadow hover:bg-yellow-300 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-6.518-3.759A1 1 0 007 8.159v7.682a1 1 0 001.234.971l6.518-1.99a1 1 0 00.748-.971v-2.584a1 1 0 00-.748-.97z" />
+      </svg>
+      Lanjutkan untuk Menonton
+    </button>
 
-    <div class="mt-6 flex items-center gap-3">
-      <button id="goBtn" disabled
-        class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition">
-        Lanjutkan sekarang
-      </button>
-      <span id="countdown" class="text-sm text-slate-500"></span>
-    </div>
-
-    <div id="errorBox" class="mt-4 hidden text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-3"></div>
-
-    <noscript>
-      <div class="mt-4 text-amber-700 bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm">
-        JavaScript diperlukan untuk memuat tautan tujuan.
-      </div>
-    </noscript>
+    <div id="errorBox" class="hidden mt-4 text-sm text-rose-600"></div>
   </main>
-
-  <script>
-    const JSON_PATH = "/assets/catalog.map.json";
-    const AUTO_REDIRECT_DELAY_MS = 5000; // 5 detik
-
-    const getIdFromPath = () => {
-      const parts = window.location.pathname.replace(/\\/+$/, "").split("/");
-      return parts[parts.length - 1] || "";
-    };
-
-    const isSafeHttpUrl = (value) => {
-      try {
-        const u = new URL(value);
-        return u.protocol === "https:" || u.protocol === "http:";
-      } catch (_) {
-        return false;
-      }
-    };
-
-    const statusEl = document.getElementById("status");
-    const detailEl = document.getElementById("detail");
-    const titleEl = document.getElementById("title");
-    const urlEl = document.getElementById("url");
-    const goBtn = document.getElementById("goBtn");
-    const countdownEl = document.getElementById("countdown");
-    const errorBox = document.getElementById("errorBox");
-
-    let targetURL = "";
-    let countdownTimer = null;
-
-    const startCountdown = (ms) => {
-      const tick = () => {
-        const s = Math.ceil(ms / 1000);
-        countdownEl.textContent = s > 0 ? `Mengalihkan otomatis dalam ${s} dtk…` : "";
-        ms -= 1000;
-        if (ms >= 0) countdownTimer = setTimeout(tick, 1000);
-      };
-      tick();
-    };
-
-    const showError = (msg) => {
-      errorBox.textContent = msg;
-      errorBox.classList.remove("hidden");
-    };
-
-    (async () => {
-      const id = getIdFromPath();
-      if (!id) {
-        statusEl.textContent = "ID unik tidak ditemukan pada path URL.";
-        showError("Pastikan format URL: /v/Id_unik");
-        return;
-      }
-
-      try {
-        const res = await fetch(JSON_PATH, { cache: "no-store" });
-        if (!res.ok) throw new Error("Gagal memuat data");
-        const data = await res.json();
-
-        const item = data?.[id];
-        if (!item) {
-          statusEl.textContent = `ID ‘${id}’ tidak tersedia.`;
-          showError("Tautan tidak ditemukan. Hubungi admin bila ini keliru.");
-          return;
-        }
-
-        const { title, url } = item;
-        if (!url || !isSafeHttpUrl(url)) {
-          statusEl.textContent = "URL tujuan tidak valid.";
-          showError("Hanya http/https yang diizinkan.");
-          return;
-        }
-
-        titleEl.textContent = title || "Tautan pihak ketiga";
-        urlEl.textContent = url;
-        detailEl.classList.remove("hidden");
-        statusEl.textContent = "Tautan siap.";
-        targetURL = url;
-        goBtn.disabled = false;
-
-        startCountdown(AUTO_REDIRECT_DELAY_MS);
-        setTimeout(() => { window.location.href = targetURL; }, AUTO_REDIRECT_DELAY_MS);
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent = "Terjadi kesalahan saat memuat data.";
-        showError("Tidak dapat mengakses katalog tautan.");
-      }
-    })();
-
-    goBtn.addEventListener("click", () => {
-      if (targetURL) window.location.href = targetURL;
-    });
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
