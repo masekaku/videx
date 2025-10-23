@@ -3,11 +3,10 @@ const continueBtn = document.getElementById("continueBtn");
 const errorBox = document.getElementById("errorBox");
 let targetURL = "";
 
-const getIdFromPath = () => {
-  const parts = window.location.pathname.replace(/\/+$/, "").split("/");
-  return parts[parts.length - 1] || "";
-};
+// Ambil ID unik dari URL
+const id = window.location.pathname.replace(/\/+$/, "").split("/").pop();
 
+// Validasi URL eksternal
 const isSafeHttpUrl = (value) => {
   try { return ["https:", "http:"].includes(new URL(value).protocol); }
   catch { return false; }
@@ -18,32 +17,32 @@ const showError = (msg) => {
   errorBox.classList.remove("hidden");
 };
 
+// Load JSON dan ambil URL berdasarkan ID
 (async () => {
-  const id = getIdFromPath();
-  if(!id){ showError("ID unik tidak ditemukan."); return; }
-
   try {
-    const res = await fetch(JSON_PATH, {cache:"no-store"});
-    if(!res.ok) throw new Error("Gagal memuat JSON");
+    const res = await fetch(JSON_PATH, { cache: "no-store" });
+    if (!res.ok) throw new Error("Gagal memuat JSON");
     const data = await res.json();
-    const item = data?.[id];
-    if(!item || !item.url || !isSafeHttpUrl(item.url)){
-      showError("URL tujuan tidak valid atau tidak ditemukan.");
+    const item = data[id];
+
+    if (!item || !item.url || !isSafeHttpUrl(item.url)) {
+      showError("ID tidak ditemukan atau URL tidak valid.");
       setTimeout(() => { window.location.href = "/404.html"; }, 2000);
       return;
     }
 
     targetURL = item.url;
     continueBtn.disabled = false;
-  } catch(err){
+  } catch (err) {
     console.error(err);
     showError("Terjadi kesalahan saat memuat tautan.");
   }
 })();
 
+// Tombol lanjutkan redirect ke URL eksternal
 continueBtn.addEventListener("click", () => {
-  if(targetURL) {
-    if (window.Histats) Histats.track_click(); // Histats tracking
+  if (targetURL) {
+    if (window.Histats) Histats.track_click(); // Analytics
     window.location.href = targetURL;
   }
 });
