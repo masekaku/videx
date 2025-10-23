@@ -1,9 +1,8 @@
 {
   "rewrites": [
-    { "source": "/v/:id", "destination": "/" },
-
-    { "source": "/protocol", "destination": "/company/protocol.html" },
-    { "source": "/terms", "destination": "/company/terms.html" },
-    { "source": "/contact", "destination": "/company/contact.html" }
+    {
+      "source": "/v/:key",
+      "destination": "/index.html"
+    }
   ]
 }
