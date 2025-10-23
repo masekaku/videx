@@ -1,71 +1,71 @@
-// PENTING: Gunakan path absolut "/links.json"
+// IMPORTANT: Use the absolute path "/links.json"
 const jsonFileUrl = '/links.json';
 
-// Ambil elemen tombol
+// Get the button element
 const watchButton = document.getElementById('watch-button');
 
 /**
- * Fungsi untuk mengambil key dari path URL.
- * Contoh: URL "/v/promo" akan mengembalikan "promo".
+ * Function to get the key from the URL path.
+ * Example: URL "/v/promo" will return "promo".
  */
 function getRedirectKey() {
-  // window.location.pathname akan berisi "/v/promo"
+  // window.location.pathname will contain "/v/promo"
   const path = window.location.pathname; 
-  
-  // Pisahkan string berdasarkan '/' -> hasil: ["", "v", "promo"]
+
+  // Split the string by '/' -> result: ["", "v", "promo"]
   const parts = path.split('/'); 
-  
-  // Pastikan formatnya benar (/v/KEY) dan ambil KEY-nya
+
+  // Ensure the format is correct (/v/KEY) and get the KEY
   if (parts[1] === 'v' && parts[2]) {
-    return parts[2]; // Ini adalah "promo"
+    return parts[2]; // This is "promo"
   }
-  return null; // Tidak ada key
+  return null; // No key
 }
 
-// 1. Dapatkan key saat halaman dimuat
+// 1. Get the key when the page loads
 const redirectKey = getRedirectKey();
-console.log('Key yang diminta dari URL:', redirectKey);
+console.log('Key requested from URL:', redirectKey);
 
 /**
- * Fungsi yang dijalankan saat tombol diklik
+ * Function that runs when the button is clicked
  */
 async function redirectToVideo() {
-  
-  // 2. Buat tombol jadi "loading"
+
+  // 2. Set the button to a "loading" state
   watchButton.disabled = true;
   watchButton.innerHTML = 'Loading...';
 
   try {
-    // 3. Ambil file JSON
+    // 3. Fetch the JSON file
     const response = await fetch(jsonFileUrl);
     if (!response.ok) {
-      throw new Error(`Gagal mengambil data: ${response.statusText}`);
+      throw new Error(`Failed to fetch data: ${response.statusText}`);
     }
     const data = await response.json();
-    
-    // 4. Tentukan URL tujuan
-    // Jika data['promo'] ada, gunakan itu.
-    // Jika tidak, gunakan data['default'].
+
+    // 4. Determine the destination URL
+    // If data['promo'] exists, use it.
+    // Otherwise, use data['default'].
     const destinationUrl = data[redirectKey] || data.default;
 
-    // 5. Arahkan pengguna
+    // 5. Redirect the user
     if (destinationUrl) {
-      console.log(`Mengarahkan ke key '${redirectKey || 'default'}': ${destinationUrl}`);
+      console.log(`Redirecting to key '${redirectKey || 'default'}': ${destinationUrl}`);
       window.location.replace(destinationUrl);
     } else {
-      // Ini terjadi jika 'default' juga tidak ada di JSON
-      throw new Error('Key tidak ditemukan dan tidak ada URL default di JSON.');
+      // This happens if 'default' is also not in the JSON
+      throw new Error('Key not found and no default URL in JSON.');
     }
 
   } catch (error) {
-    // 6. Tangani jika ada error
-    console.error('Proses redirect gagal:', error);
+    // 6. Handle any errors
+    console.error('Redirect process failed:', error);
     watchButton.disabled = false;
-    // (Mengembalikan HTML tombol ke semula butuh penanganan lebih, 
-    // tapi 'Coba Lagi' sudah cukup untuk error)
-    watchButton.innerHTML = 'Gagal, Coba Lagi';
+    // (Restoring the original button HTML requires more handling,
+    // but 'Try Again' is sufficient for an error)
+    watchButton.innerHTML = 'Failed, Try Again';
   }
 }
 
-// 7. Pasang fungsi tadi ke event 'click' tombol
+// 7. Attach the function to the button's 'click' event
 watchButton.addEventListener('click', redirectToVideo);
