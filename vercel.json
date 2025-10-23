@@ -1,9 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/v/:id", "destination": "/" },
-
-    { "source": "/protocol", "destination": "/company/protocol.html" },
-    { "source": "/terms", "destination": "/company/terms.html" },
-    { "source": "/contact", "destination": "/company/contact.html" }
+  "version": 2,
+  "routes": [
+    { "src": "^/v/(.*)$", "dest": "/v/index.html" },
+    { "src": "/assets/(.*)", "headers": { "Cache-Control": "no-store" }, "dest": "/assets/$1" },
+    { "src": "/404.html", "dest": "/404.html" },
+    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
   ]
 }
