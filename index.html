@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Age Verification</title>
-  <meta name="robots" content="noindex, nofollow">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/v/css/style.css">
+  <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="bg-[#f8f8f0] min-h-screen flex items-center justify-center p-6">
 
-  <main class="bg-white rounded-2xl shadow-lg shadow-black/25 border border-black p-8 max-w-md w-full text-center transition-transform transform hover:scale-[1.02]">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Continue to Video?</h1>
-    <p class="text-gray-800 text-base mb-6">
-      Your video is ready.<br>
-      Click the button below to start watching.
-    </p>
-
-    <button id="continueBtn" disabled
-      class="flex items-center justify-center gap-2 w-full py-3 bg-yellow-400 text-gray-800 font-bold rounded-xl shadow hover:bg-yellow-300 transition">
+  <main id="ageModal" class="modal-container">
+    <h1 class="modal-title">Continue to Video?</h1>
+    <p class="modal-text">Your video is ready.<br>
+      Click the button below to start watching.</p>
+    <button id="continueBtn" disabled class="modal-btn" aria-label="Lanjutkan untuk menonton konten video">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-6.518-3.759A1 1 0 007 8.159v7.682a1 1 0 001.234.971l6.518-1.99a1 1 0 00.748-.971v-2.584a1 1 0 00-.748-.97z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M14.752 11.168l-6.518-3.759A1 1 0 007 8.159v7.682a1 1 0 001.234.971l6.518-1.99a1 1 0 00.748-.971v-2.584a1 1 0 00-.748-.97z" />
       </svg>
       Lanjutkan untuk Menonton
     </button>
-
-    <div id="errorBox" class="hidden mt-4 text-sm text-rose-600"></div>
+    <div id="errorBox" class="error-box"></div>
   </main>
+
   <script src="/v/js/main.js"></script>
 </body>
 </html>
